@@ -12,6 +12,7 @@ import {
   IconButton,
   Snackbar,
 } from '@material-ui/core';
+import * as yup from 'yup';
 import { addCar } from '../redux/carsSlice';
 
 //! Styles from MaterialUI
@@ -32,6 +33,13 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
+//! YUP
+
+const validationSchema = yup.object({
+  brand: yup.string('Enter vehicle make').required('Required vehicle make'),
+  model: yup.string('Enter vehicle model').required('Required'),
+  color: yup.string('Enter color').required('Required'),
+});
 
 //! Component
 
@@ -43,6 +51,7 @@ const AddNewCar = () => {
   //! Formik
   const formik = useFormik({
     initialValues: { brand: '', model: '', color: '' },
+    validationSchema,
     onSubmit: ({ brand, model, color }) => {
       dispatch(addCar({ id: nanoid(), brand, model, color }));
       setOpen(true);

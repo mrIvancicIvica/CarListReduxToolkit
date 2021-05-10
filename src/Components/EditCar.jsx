@@ -8,6 +8,7 @@ import {
   makeStyles,
   Grid,
 } from '@material-ui/core';
+import * as yup from 'yup'
 import { updateCar } from '../redux/carsSlice';
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+const validationSchema = yup.object({
+  brand: yup.string('Enter brand name').required('Required brand insert'),
+  model: yup.string('Enter model name').required('Required model insert'),
+  color: yup.string('Enter color').required('Required color insert')
+
+})
+
 const EditCar = ({ editCar, setOpenDialog }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -37,6 +46,7 @@ const EditCar = ({ editCar, setOpenDialog }) => {
       model: editCar.model,
       color: editCar.color,
     },
+    validationSchema,
     onSubmit: ({ brand, model, color }) => {
       setOpenDialog(false);
       dispatch(updateCar({ id: editCar.id, changes: { brand, model, color } }));
